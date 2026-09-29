@@ -20,8 +20,8 @@ It.1 — FastAPI service scaffold. Health endpoint live; extraction endpoint nex
 ```bash
 python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
-uvicorn app.main:app --reload
+uvicorn app.edges.api:app --reload
 ```
 
 Defaults point at Ollama on `localhost:11434`. Any other OpenAI-compatible local server works too
-(e.g. OMLX on Apple Silicon) — copy `.env.example` to `.env` and change the `ENGINE_*` values.
+— copy `.env.example` to `.env` and change the values (including how that server switches thinking off).
