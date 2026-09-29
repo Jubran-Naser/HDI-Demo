@@ -11,15 +11,15 @@ what makes these *proxy* checks: "the AI model's value appears in the claim text
 suggests, but does not prove, that it is the right value (e.g. the report date instead
 of the incident date would still pass). Whether the check is good enough is measured offline.
 
-v1 scope: completeness for every field; verification against the claim text for policy
-number, licence plate and incident date. The amount's verification is deferred (it
-needs German number normalization: "1.450,50 €" → 1450.50).
+v1 scope: completeness for every field; verification against the claim text for all
+four: policy number, licence plate, incident date (read day-first) and amount (read in
+German number format: "1.450,50 €" → 1450.50).
 """
 
 from datetime import date
 
 from app.core.models import ClaimDecision, InsuranceClaim, ProxyCheckResult
-from app.core.text_matching import dates_in_text, identifier_in_text
+from app.core.text_matching import amounts_in_text, dates_in_text, identifier_in_text, to_cents
 
 FIELDS = ("policy_number", "incident_date", "amount_claimed", "licence_plate")
 IDENTIFIER_FIELDS = ("policy_number", "licence_plate")
@@ -65,6 +65,17 @@ def verify_date_against_text(value: date, claim_text: str) -> ProxyCheckResult:
     )
 
 
+
+def verify_amount_against_text(value: float, claim_text: str) -> ProxyCheckResult:
+    amount = to_cents(value)                                        # 1450.5 → 1450.50
+    found = amount in amounts_in_text(claim_text)
+    return ProxyCheckResult(
+        field="amount_claimed",
+        kind="verification",
+        passed=found,
+        detail=f"{amount} {'found' if found else 'not found'} among the amounts in the claim text",
+    )
+
 # --- running the proxy checks --------------------------------------------------------------
 
 def proxy_checks_for_field(
@@ -86,7 +97,8 @@ def proxy_checks_for_field(
         results.append(verify_identifier_against_text(field, value, claim_text))
     elif field == "incident_date":
         results.append(verify_date_against_text(value, claim_text))
-    # amount_claimed: no comparison with the claim text yet (deferred)
+    elif field == "amount_claimed":
+        results.append(verify_amount_against_text(value, claim_text))
     return results
 
 
