@@ -1,0 +1,56 @@
+"""Text matching: find values in the claim text and bring them into one comparable form.
+
+Pure functions — no network, no AI model, no settings. Used by the proxy checks in
+escalation.py to answer "is the AI model's value written in the claim text?".
+"""
+
+import re
+from datetime import date
+
+# Dates in the claim text. Day first (Austrian order) is a stated assumption: 3.4.2026 = 3 April.
+DAY_FIRST_DATE = re.compile(r"\b(?P<day>\d{1,2})[./-](?P<month>\d{1,2})[./-](?P<year>\d{4}|\d{2})\b")
+ISO_DATE = re.compile(r"\b(?P<year>\d{4})-(?P<month>\d{1,2})-(?P<day>\d{1,2})\b")
+
+# Characters allowed between the characters of an identifier: space, hyphen, dot, slash — any number, or none.
+IDENTIFIER_SEPARATORS = r"[\s\-./]*"
+
+
+# --- identifiers (policy number, licence plate) -------------------------------------------
+
+def normalize_identifier(value: str) -> str:
+    """Capitals, no separators: 'vk-998273 a' → 'VK998273A'."""
+    return re.sub(r"[^A-Z0-9]", "", value.upper())
+
+
+def identifier_in_text(identifier: str, claim_text: str) -> bool:
+    """Is this identifier written in the claim text — with or without separators?
+
+    Normalizes the claim text only at the spot being compared: 'VK998273A' matches
+    'VK 998273 A' and 'vk-998273-a', but never inside a longer identifier ('XVK998273A1').
+    """
+    characters = normalize_identifier(identifier)
+    pattern = IDENTIFIER_SEPARATORS.join(re.escape(character) for character in characters)
+    not_inside_a_longer_identifier = rf"(?<![A-Z0-9]){pattern}(?![A-Z0-9])"
+    return re.search(not_inside_a_longer_identifier, claim_text, re.IGNORECASE) is not None
+
+
+# --- dates ---------------------------------------------------------------------------------
+
+def dates_in_text(claim_text: str) -> list[date]:
+    """Every real date written in the claim text, day-first (Austrian order) or ISO."""
+    matches = [*DAY_FIRST_DATE.finditer(claim_text), *ISO_DATE.finditer(claim_text)]
+    possible_dates = [to_date(match) for match in matches]
+    return [real_date for real_date in possible_dates if real_date is not None]
+
+
+def to_date(match: re.Match) -> date | None:
+    """A matched date → a real date, or None if it can't exist (e.g. 30.2.)."""
+    try:
+        return date(full_year(int(match["year"])), int(match["month"]), int(match["day"]))
+    except ValueError:
+        return None
+
+
+def full_year(year: int) -> int:
+    """Two-digit years are read as 20xx: 23 → 2023."""
+    return 2000 + year if year < 100 else year

@@ -1,0 +1,28 @@
+"""Settings for the model server and the AI model it runs.
+
+Names used here: this file = config.py · `Settings` = the list of settings with their
+defaults · `settings` = the values in use (defaults, overridden by environment variables
+or a .env file). To change a value, set e.g. AI_MODEL=... — no code change needed.
+
+The model server is swappable: any server speaking the OpenAI-compatible protocol
+works by changing these values. Nothing about the model server is hardcoded elsewhere.
+"""
+
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+
+    # Default: Ollama (runs on macOS, Linux and Windows — easy for reviewers).
+    model_server_url: str = "http://localhost:11434/v1"
+    ai_model: str = "qwen3.5:4b"
+    model_server_api_key: str = "ollama"  # Ollama ignores the key, but the driver requires one
+
+    # Extra options sent with every request to the model server. Here: switch the AI
+    # model's thinking off (Ollama's spelling). Another model server spells this differently,
+    # so swapping the model server means changing this setting too.
+    model_server_extra_body: dict = {"reasoning_effort": "none"}
+
+
+settings = Settings()
