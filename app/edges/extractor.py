@@ -26,6 +26,9 @@ SYSTEM_PROMPT = (
 def _response_format() -> dict:
     """The InsuranceClaim schema in the strict form structured output expects."""
     schema = InsuranceClaim.model_json_schema()
+    # The date as written ("28.04.2026"); our code reads it (models.py). A "format": "date" rule here makes the
+    # model server force year-first digits, which scrambled 15 of 50 dates in the baseline run ("2804-04-20").
+    schema["properties"]["incident_date"] = {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Incident Date"}
     schema["required"] = list(schema["properties"])  # every field present; null = "not stated"
     schema["additionalProperties"] = False
     for prop in schema["properties"].values():

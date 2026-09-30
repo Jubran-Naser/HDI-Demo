@@ -8,14 +8,23 @@ invent one — which is exactly the hallucination the escalate-if-doubtful check
 from datetime import date
 from typing import Literal
 
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel, ValidationError, field_validator
+
+from app.core.text_matching import read_date_as_written
 
 
 class InsuranceClaim(BaseModel):
     policy_number: str | None = None     # Polizzennummer, e.g. "VK-998273-A"
-    incident_date: date | None = None    # a real calendar date: the type check turns "2023-10-12" into one, refuses "2023-02-30"
+    incident_date: date | None = None    # the AI model copies it as written ("28.04.2026"); read_date_as_written reads it
     amount_claimed: float | None = None  # Schadenshöhe, e.g. 1450.50
     licence_plate: str | None = None     # Kennzeichen, e.g. "W-12345A"
+
+    @field_validator("incident_date", mode="before")
+    @classmethod
+    def read_copied_date(cls, value: object) -> object:
+        if isinstance(value, str):
+            return read_date_as_written(value) or value   # unreadable → left as is → the type check sets it aside
+        return value
 
 
 class ProxyCheckResult(BaseModel):

@@ -50,6 +50,19 @@ def dates_in_text(claim_text: str) -> list[date]:
     return [real_date for real_date in possible_dates if real_date is not None]
 
 
+def read_date_as_written(written: str) -> date | None:
+    """One date as the AI model copied it from the claim text → a real date.
+
+    Reads the same forms as dates_in_text: '28.04.2026' · '9.6.26' · '2026-04-28'.
+    None if it isn't one date in those forms (e.g. '3. März 2026', 'gestern').
+    """
+    for pattern in (DAY_FIRST_DATE, ISO_DATE):
+        match = pattern.fullmatch(written.strip())
+        if match:
+            return to_date(match)
+    return None
+
+
 def to_date(match: re.Match) -> date | None:
     """A matched date → a real date, or None if it can't exist (e.g. 30.2.)."""
     try:
