@@ -1,0 +1,768 @@
+# The 50 mock claims the eval grades against — drafted by Claude from eval/drafting-spec.md,
+# checked one by one by the author. All names, addresses and numbers are fictional.
+#
+# Per claim: id · kind · claim_text · correct (the 4 fields) · trap (what the claim tests; null for clean claims).
+# Correct values: dates ISO · amounts to the cent · identifiers as written canonically (grading compares after the
+# core's normalization, so "w 58302 a" and "W-58302A" are the same plate) · a value the text doesn't state → null.
+# Kind 7: the correct value is the newest message's; unchanged fields come from the quoted message.
+
+# --- clean: all four fields stated once, no trap ------------------------------------------------
+
+- id: clean-01
+  kind: clean
+  claim_text: |
+    Sehr geehrte Damen und Herren,
+
+    ich möchte einen Schaden an meinem Fahrzeug melden. Am 12.03.2026 bin ich beim Ausparken in der Garage in der
+    Leopoldsgasse gegen eine Säule gefahren. Dabei wurden die hintere Stoßstange und das rechte Rücklicht beschädigt.
+
+    Mein Fahrzeug hat das Kennzeichen W-48213K, meine Polizzennummer lautet VK-310582-A.
+
+    Laut Kostenvoranschlag der Werkstatt belaufen sich die Reparaturkosten auf 1.450,50 €. Ich ersuche um Übernahme
+    dieses Betrags.
+
+    Mit freundlichen Grüßen
+    Katharina Hofbauer
+  correct: {policy_number: VK-310582-A, incident_date: 2026-03-12, amount_claimed: 1450.50, licence_plate: W-48213K}
+  trap: null
+
+- id: clean-02
+  kind: clean
+  claim_text: |
+    Betreff: Schadensmeldung Parkschaden
+
+    Guten Tag,
+
+    mein Auto (Kennzeichen W-20517B) wurde am 04.02.2026 am Parkplatz vor dem Supermarkt in der Simmeringer
+    Hauptstraße angefahren. Der Verursacher ist leider nicht bekannt. Die Fahrertür ist eingedrückt, der Lack
+    zerkratzt. Die Werkstatt verlangt EUR 890,-.
+
+    Polizze: VK-774120-C
+
+    Bitte um Rückmeldung, wie es weitergeht.
+    LG Stefan Gruber
+  correct: {policy_number: VK-774120-C, incident_date: 2026-02-04, amount_claimed: 890.00, licence_plate: W-20517B}
+  trap: null
+
+- id: clean-03
+  kind: clean
+  claim_text: |
+    Hagelschaden am 21.05.2026 in Mödling, Motorhaube und Dach voller Dellen. Das Auto stand während des Unwetters
+    im Freien, die Garage war belegt. Kennzeichen MD-3391F. Polizzennr. VK-558014-A. Kosten laut Werkstatt € 3.200.
+    Bitte um einen Termin für die Besichtigung.
+  correct: {policy_number: VK-558014-A, incident_date: 2026-05-21, amount_claimed: 3200.00, licence_plate: MD-3391F}
+  trap: null
+
+- id: clean-04
+  kind: clean
+  claim_text: |
+    Betreff: Polizze VK-209431-B – Schadensmeldung
+
+    Sehr geehrte Damen und Herren,
+
+    auf der Südosttangente ist mir am 17.01.2026 bei stockendem Verkehr ein Stein von einem vorausfahrenden LKW gegen
+    die Windschutzscheibe geflogen. Die Scheibe hat einen durchgehenden Riss und muss getauscht werden.
+
+    Betroffen ist mein PKW mit dem Kennzeichen W-7702 HT. Der Scheibentausch kostet laut Rechnung 740,00 Euro.
+    Ich bitte um Erstattung.
+
+    Hochachtungsvoll
+    Martin Pichler
+  correct: {policy_number: VK-209431-B, incident_date: 2026-01-17, amount_claimed: 740.00, licence_plate: W-7702HT}
+  trap: null
+
+- id: clean-05
+  kind: clean
+  claim_text: |
+    Betreff: Wildunfall
+
+    Sehr geehrte Damen und Herren,
+
+    ich bin am 28.04.2026 in der Nacht auf der Landesstraße bei Baden mit einem Reh zusammengestoßen. Die Polizei
+    war vor Ort, das Protokoll reiche ich nach. Beschädigt sind Frontschürze, Kühlergrill und linker Scheinwerfer.
+
+    Fahrzeug: BN-1147E
+    Polizzennummer: VK-603378-D
+    Reparaturkosten: 4.815,20 €
+
+    Mit freundlichen Grüßen
+    Elisabeth Wagner
+  correct: {policy_number: VK-603378-D, incident_date: 2026-04-28, amount_claimed: 4815.20, licence_plate: BN-1147E}
+  trap: null
+
+- id: clean-06
+  kind: clean
+  claim_text: |
+    Hallo, hab am 9.6.26 beim Einparken in der Josefstädter Straße einen Poller erwischt. Stoßstange vorne ist
+    kaputt. Auto W-55190M, Polizze VK-118467-A. Werkstatt sagt 620 €. Was brauchts von mir noch? Danke, Lukas Berger
+  correct: {policy_number: VK-118467-A, incident_date: 2026-06-09, amount_claimed: 620.00, licence_plate: W-55190M}
+  trap: null
+
+- id: clean-07
+  kind: clean
+  claim_text: |
+    Sehr geehrte Damen und Herren,
+
+    hiermit melde ich einen Sturmschaden. Während des Unwetters am 15.08.2026 ist in der Hietzinger Hauptstraße ein
+    großer Ast auf mein geparktes Fahrzeug gefallen. Das Dach und die Heckscheibe sind schwer beschädigt.
+
+    Kennzeichen: W-30988D
+    Polizzennummer: VK-947215-B
+
+    Die Reparatur wird laut Kostenvoranschlag 6.380,00 € kosten. Fotos der Schäden lege ich bei.
+
+    Freundliche Grüße
+    Andrea Mayr
+  correct: {policy_number: VK-947215-B, incident_date: 2026-08-15, amount_claimed: 6380.00, licence_plate: W-30988D}
+  trap: null
+
+- id: clean-08
+  kind: clean
+  claim_text: |
+    Betreff: Schaden melden
+
+    Hallo liebes Team, ich melde einen Schaden: Beim Rückwärtsfahren aus der Einfahrt habe ich am 03.07.2026 den
+    Gartenzaun gestreift, mein Auto hat dabei eine lange Delle an der Beifahrerseite abbekommen. Mein Kennzeichen ist
+    PL-2268H und die Polizzennummer VK-382650-C. Die Werkstatt hat EUR 2.105,90 veranschlagt. Danke für die rasche
+    Bearbeitung! Sabine Huber
+  correct: {policy_number: VK-382650-C, incident_date: 2026-07-03, amount_claimed: 2105.90, licence_plate: PL-2268H}
+  trap: null
+
+- id: clean-09
+  kind: clean
+  claim_text: |
+    Außenspiegel links abgetreten, am 26.01.2026 zwischen 14 und 16 Uhr, das Auto stand in der Brünner Straße.
+    Anzeige bei der Polizei ist erstattet. Kfz W-61420S, Polizze VK-825903-A. Spiegel inkl. Einbau laut Werkstatt
+    385,40 €. Florian Eder
+  correct: {policy_number: VK-825903-A, incident_date: 2026-01-26, amount_claimed: 385.40, licence_plate: W-61420S}
+  trap: null
+
+- id: clean-10
+  kind: clean
+  claim_text: |
+    Sehr geehrte Damen und Herren,
+
+    leider muss ich Ihnen einen Unfall melden. Ich bin am 2.9.2026 auf der Wagramer Straße bei Regen ins Schleudern
+    gekommen und gegen eine Verkehrsinsel gefahren. Verletzt wurde niemand, die Frontpartie ist aber stark beschädigt.
+
+    Mein Fahrzeug, Kennzeichen W-8845 TR, ist bei Ihnen unter der Polizzennummer VK-460127-D versichert. Die
+    Reparaturkosten betragen laut Werkstatt 5.260 Euro.
+
+    Mit freundlichen Grüßen
+    Thomas Steiner
+  correct: {policy_number: VK-460127-D, incident_date: 2026-09-02, amount_claimed: 5260.00, licence_plate: W-8845TR}
+  trap: null
+
+# --- kind 1: two dates — choose the incident date --------------------------------------------------
+
+- id: k1-01
+  kind: two_dates
+  claim_text: |
+    Wien, 16.03.2026
+
+    Sehr geehrte Damen und Herren,
+
+    ich melde folgenden Schaden. Unfalltag: 11.03.2026. Beim Einparken in einer engen Parklücke habe ich den
+    Randstein touchiert; die rechte Felge und der Reifen sind beschädigt.
+
+    Kennzeichen W-19304L, Polizze VK-231876-B. Die Kosten laut Werkstatt betragen 540,00 €.
+
+    Mit freundlichen Grüßen
+    Monika Schwarz
+  correct: {policy_number: VK-231876-B, incident_date: 2026-03-11, amount_claimed: 540.00, licence_plate: W-19304L}
+  trap: letter date (16.03.) before the incident date; incident date labelled
+
+- id: k1-02
+  kind: two_dates
+  claim_text: |
+    Betreff: Delle Kofferraum
+
+    Hallo, mir ist am 06.05.2026 in der Tiefgarage beim Zurücksetzen der Kofferraumdeckel gegen einen Pfeiler
+    gekommen. Die Werkstatt hat mir einen Termin für den 19.05.2026 gegeben. Kosten laut Voranschlag 1.120 €.
+    Auto: W-44671N, Polizze VK-690342-A. Danke, Georg Lechner
+  correct: {policy_number: VK-690342-A, incident_date: 2026-05-06, amount_claimed: 1120.00, licence_plate: W-44671N}
+  trap: repair appointment (19.05.) after the incident; only context tells them apart
+
+- id: k1-03
+  kind: two_dates
+  claim_text: |
+    Sehr geehrte Damen und Herren,
+
+    ich bin seit 01.01.2026 bei Ihnen versichert (Polizzennummer VK-137590-C). Am 23.02.2026 ist mir auf der
+    Höhenstraße bei Glatteis das Heck ausgebrochen und ich bin gegen die Leitschiene gerutscht. Die hintere linke
+    Seite ist eingedrückt.
+
+    Das Fahrzeug hat das Kennzeichen W-2903 RS. Die Reparatur kostet laut Kostenvoranschlag 3.470,00 €.
+
+    Mit freundlichen Grüßen
+    Christina Fuchs
+  correct: {policy_number: VK-137590-C, incident_date: 2026-02-23, amount_claimed: 3470.00, licence_plate: W-2903RS}
+  trap: policy start date (01.01.) comes first in the text
+
+- id: k1-04
+  kind: two_dates
+  claim_text: |
+    Besichtigung durch Gutachter möglich ab 14.04.2026. Schaden entstanden am 08.04.2026 beim Rangieren auf dem
+    Firmenparkplatz in Liesing, Beifahrertür eingedrückt. Kfz W-73015P, Polizze VK-514208-D, Voranschlag € 1.980.
+    Andreas Wimmer
+  correct: {policy_number: VK-514208-D, incident_date: 2026-04-08, amount_claimed: 1980.00, licence_plate: W-73015P}
+  trap: inspection date (14.04.) comes first; incident date labelled ("Schaden entstanden")
+
+- id: k1-05
+  kind: two_dates
+  claim_text: |
+    Betreff: Schriftliche Nachmeldung
+
+    Sehr geehrte Damen und Herren,
+
+    wie am Telefon besprochen, reiche ich meine Schadensmeldung schriftlich nach. Ich habe den Schaden bereits am
+    25.06.2026 bei Ihrer Hotline gemeldet. Passiert ist es am Tag davor, am 24.06.2026: In der Waschstraße in der
+    Triester Straße wurde der Heckscheibenwischer abgerissen und die Heckklappe zerkratzt.
+
+    Kennzeichen W-5618 GV, Polizze VK-842716-A. Die Reparatur kostet 690,50 €.
+
+    Mit freundlichen Grüßen
+    Barbara Koller
+  correct: {policy_number: VK-842716-A, incident_date: 2026-06-24, amount_claimed: 690.50, licence_plate: W-5618GV}
+  trap: report date (25.06.) one day after the incident, written first; context only
+
+# --- kind 2: two amounts — choose the amount claimed -----------------------------------------------
+
+- id: k2-01
+  kind: two_amounts
+  claim_text: |
+    Sehr geehrte Damen und Herren,
+
+    am 09.04.2026 habe ich beim Einparken in der Wiedner Hauptstraße einen Betonpoller übersehen. Die vordere
+    Stoßstange und der Kühlergrill sind beschädigt. Die Reparatur kostet laut Werkstatt 2.340,00 €. Mir ist
+    bewusst, dass davon mein Selbstbehalt von 300,00 € abgezogen wird.
+
+    Kennzeichen W-26604J, Polizzennummer VK-375019-B.
+
+    Mit freundlichen Grüßen
+    Johannes Brandl
+  correct: {policy_number: VK-375019-B, incident_date: 2026-04-09, amount_claimed: 2340.00, licence_plate: W-26604J}
+  trap: Selbstbehalt (300,00 €) after the repair amount; labelled
+
+- id: k2-02
+  kind: two_amounts
+  claim_text: |
+    Betreff: Hagelschaden Perchtoldsdorf
+
+    Guten Tag,
+
+    mein Auto ist laut Kaufvertrag rund 12.500 € wert, deshalb war ich froh, dass es kein Totalschaden ist: Am
+    14.07.2026 hat ein Hagelsturm in Perchtoldsdorf Motorhaube, Dach und Kofferraumdeckel verbeult. Die Werkstatt
+    schätzt die Reparatur auf 4.980 €.
+
+    Kennzeichen MD-5027K, Polizze VK-163482-C.
+
+    Beste Grüße
+    Wolfgang Aigner
+  correct: {policy_number: VK-163482-C, incident_date: 2026-07-14, amount_claimed: 4980.00, licence_plate: MD-5027K}
+  trap: the car's value (12.500 €) comes first and is the larger sum
+
+- id: k2-03
+  kind: two_amounts
+  claim_text: |
+    Sehr geehrte Damen und Herren,
+
+    am 19.03.2026 habe ich beim Vorbeifahren an einer Baustellenabsperrung in der Gudrunstraße den rechten
+    Außenspiegel und den Kotflügel beschädigt. Der erste Kostenvoranschlag der Vertragswerkstatt über 3.150,00 € war
+    mir zu hoch. Eine zweite Werkstatt macht es um 2.480,00 €, dort lasse ich die Reparatur durchführen.
+
+    Kennzeichen: W-90213C
+    Polizzennummer: VK-706951-A
+
+    Mit freundlichen Grüßen
+    Nicole Haas
+  correct: {policy_number: VK-706951-A, incident_date: 2026-03-19, amount_claimed: 2480.00, licence_plate: W-90213C}
+  trap: a rejected quote (3.150,00 €) comes first; only context says which one is claimed
+
+- id: k2-04
+  kind: two_amounts
+  claim_text: |
+    Unfall am 30.04.2026 auf dem Parkplatz beim Donauzentrum, bin gegen einen Laternenmast gefahren. Das Auto war
+    nicht mehr fahrbereit. Abschleppen 180,00 €, Reparatur 1.820,00 €, gesamt 2.000,00 €. Kfz W-38472F, Polizze
+    VK-259604-D. Mario Pfeiffer
+  correct: {policy_number: VK-259604-D, incident_date: 2026-04-30, amount_claimed: 2000.00, licence_plate: W-38472F}
+  trap: itemised costs (180,00 € + 1.820,00 €) with a stated total; the total is claimed
+
+- id: k2-05
+  kind: two_amounts
+  claim_text: |
+    Betreff: Schaden Unterboden
+
+    Hallo,
+
+    am 11.08.2026 bin ich beim Wenden auf einem Feldweg bei Purkersdorf in einen Graben gerutscht. Unterboden und
+    Hinterachse sind beschädigt. Die ersten 500 € zahle ich ja selbst, das ist mir klar. Die Werkstatt hat für die
+    Reparatur 7.340,60 € veranschlagt.
+
+    Mein Auto: W-6159 AK, Polizze VK-431087-B.
+
+    Danke und liebe Grüße
+    Daniela Moser
+  correct: {policy_number: VK-431087-B, incident_date: 2026-08-11, amount_claimed: 7340.60, licence_plate: W-6159AK}
+  trap: Selbstbehalt (500 €) comes first, not named as such; context only
+
+# --- kind 3: two plates — choose the insured car's plate -------------------------------------------
+
+- id: k3-01
+  kind: two_plates
+  claim_text: |
+    Sehr geehrte Damen und Herren,
+
+    am 05.03.2026 kam es an der Kreuzung Landstraßer Hauptstraße / Rasumofskygasse zu einem Zusammenstoß. Mein
+    Fahrzeug, Kennzeichen W-14582R, wurde an der linken Seite beschädigt. Kennzeichen des Unfallgegners: W-80317T.
+    Die Schuldfrage ist noch ungeklärt, daher melde ich den Schaden über meine Kasko.
+
+    Polizzennummer: VK-927364-A
+    Reparaturkosten laut Werkstatt: 2.760,00 €
+
+    Mit freundlichen Grüßen
+    Herbert Kainz
+  correct: {policy_number: VK-927364-A, incident_date: 2026-03-05, amount_claimed: 2760.00, licence_plate: W-14582R}
+  trap: the other party's plate (W-80317T) after the own plate; both labelled
+
+- id: k3-02
+  kind: two_plates
+  claim_text: |
+    Betreff: Fahrerflucht
+
+    Guten Tag,
+
+    ein Fahrzeug mit dem Kennzeichen W-5503 BX hat mich am 21.04.2026 auf dem Parkplatz des Fitnessstudios in
+    Ottakring angefahren und ist weitergefahren. Eine Zeugin hat sich das Kennzeichen notiert. Mein Auto (W-2276 KM)
+    hat eine Delle hinten rechts. Die Werkstatt verlangt 1.390 €.
+
+    Polizze: VK-584019-C
+
+    Mit freundlichen Grüßen
+    Verena Holzer
+  correct: {policy_number: VK-584019-C, incident_date: 2026-04-21, amount_claimed: 1390.00, licence_plate: W-2276KM}
+  trap: the other party's plate (W-5503 BX) comes first; only context tells them apart
+
+- id: k3-03
+  kind: two_plates
+  claim_text: |
+    Schaden am 12.06.2026: beim Rückwärtsfahren in Baden gegen einen Zaun. Mein Auto BN-8841P ist in der Werkstatt,
+    ich fahre derzeit einen Leihwagen (W-40097Z). Polizze VK-318756-D. Kosten Reparatur 1.675,00 €. Robert Schmid
+  correct: {policy_number: VK-318756-D, incident_date: 2026-06-12, amount_claimed: 1675.00, licence_plate: BN-8841P}
+  trap: a rental car's Vienna plate (W-40097Z) next to the insured car's Baden plate
+
+- id: k3-04
+  kind: two_plates
+  claim_text: |
+    Sehr geehrte Damen und Herren,
+
+    am 27.05.2026 wurde mein geparktes Auto beim Brunnenmarkt angefahren. Der Verursacher hat einen Zettel mit seinem
+    Kennzeichen G-7713 FA hinterlassen, war aber telefonisch nicht erreichbar. Beschädigt ist die hintere Stoßstange.
+
+    Mein Kennzeichen: W 30125 E
+    Polizzennummer: VK-651239-B
+    Kosten laut Werkstatt: 940,00 Euro
+
+    Mit freundlichen Grüßen
+    Ingrid Wallner
+  correct: {policy_number: VK-651239-B, incident_date: 2026-05-27, amount_claimed: 940.00, licence_plate: W-30125E}
+  trap: the other party's Graz plate (G-7713 FA) first; own plate written with spaces
+
+- id: k3-05
+  kind: two_plates
+  claim_text: |
+    Betreff: Auffahrunfall Gürtel
+
+    Sehr geehrte Damen und Herren,
+
+    mit meinem Auto, W-67310H, stand ich am 18.08.2026 an der roten Ampel am Gürtel, als mir ein Lieferwagen hinten
+    auffuhr. Der Lenker gab mir seine Daten, sein Wagen hat die Nummer W-67130K. Er bestreitet den Schaden inzwischen,
+    deshalb wende ich mich an Sie. Die Reparatur kostet 3.905,50 €.
+
+    Polizzennummer VK-208574-A
+
+    Mit freundlichen Grüßen
+    Alexander Reiter
+  correct: {policy_number: VK-208574-A, incident_date: 2026-08-18, amount_claimed: 3905.50, licence_plate: W-67310H}
+  trap: the other party's plate (W-67130K) nearly identical to the own plate; context only
+
+# --- kind 4: a correction in the text — take the corrected value -----------------------------------
+
+- id: k4-01
+  kind: correction
+  claim_text: |
+    [Eingangskanal: Telefon – Notiz Schadenservice]
+
+    Anruferin: Sandra Leitner, Polizze VK-490263-C, Kfz W-35816V.
+    Kundin meldet Parkschaden: Auf dem Parkplatz beim Einkaufszentrum ist ein Einkaufswagen gegen ihre Fahrertür
+    gerollt. Schadendatum lt. Kundin 12.03.2026 – korrigiert sich im Gespräch: Es war der 13.03.2026, sie hatte sich
+    im Kalender vertan. Werkstatt veranschlagt 480,00 €. Kundin reicht Fotos per Mail nach.
+  correct: {policy_number: VK-490263-C, incident_date: 2026-03-13, amount_claimed: 480.00, licence_plate: W-35816V}
+  trap: date corrected mid-call, in a clerk's phone note (12.03. → 13.03.)
+
+- id: k4-02
+  kind: correction
+  claim_text: |
+    [Eingangskanal: Chat – Online-Schadenmeldung]
+
+    Patrick Ebner: Hallo, ich möchte einen Schaden melden
+    Patrick Ebner: am 07.05.2026 ist beim Rausfahren das Garagentor zu früh zugegangen, Dach und Heckklappe sind hin
+    Patrick Ebner: Kennzeichen W-11947G, Polizze VK-736108-B
+    Patrick Ebner: die Werkstatt schätzt 1.850,00 €
+    Patrick Ebner: sorry, grad hat die Werkstatt nochmal geschrieben: endgültig sind es 2.130,00 €
+  correct: {policy_number: VK-736108-B, incident_date: 2026-05-07, amount_claimed: 2130.00, licence_plate: W-11947G}
+  trap: amount corrected in a later chat message (1.850,00 € → 2.130,00 €)
+
+- id: k4-03
+  kind: correction
+  claim_text: |
+    Seitenscheibe eingeschlagen am 22.07.2026 in der Brigittenau, Radio gestohlen, Anzeige ist gemacht. Kfz W-52804N,
+    Entschuldigung, Tippfehler: richtig ist W-52840N. Polizze VK-827451-D. Scheibe laut Werkstatt 610,00 €. Doris Kurz
+  correct: {policy_number: VK-827451-D, incident_date: 2026-07-22, amount_claimed: 610.00, licence_plate: W-52840N}
+  trap: plate corrected mid-text (two digits swapped)
+
+- id: k4-04
+  kind: correction
+  claim_text: |
+    [Eingangskanal: Post – handschriftlicher Brief, eingescannt]
+
+    Sehr geehrte Damen und Herren,
+
+    am 03.08.2026 hatte ich auf der A2 bei Wiener Neudorf einen Reifenplatzer. Dabei wurden der Radkasten und die
+    Seitenverkleidung beschädigt. Mein Fahrzeug hat das Kennzeichen MD-6027L, meine Polizzennummer ist VK-392615-A.
+    Die Reparatur kostet 2.215,00 €.
+
+    Mit freundlichen Grüßen
+    Gerhard Posch
+
+    PS: Beim Durchlesen sehe ich, dass ich bei der Polizzennummer zwei Ziffern vertauscht habe. Richtig ist
+    VK-396215-A.
+  correct: {policy_number: VK-396215-A, incident_date: 2026-08-03, amount_claimed: 2215.00, licence_plate: MD-6027L}
+  trap: policy number corrected in the P.S. of a handwritten letter (two digits swapped)
+
+- id: k4-05
+  kind: correction
+  claim_text: |
+    [Eingangskanal: Sprachnachricht – automatisch transkribiert]
+
+    Ja hallo, hier ist Julia Schober, ich wollte einen Schaden melden. Ich bin am 15.09.2026 beim Einfahren in die
+    Garage mit dem Dachträger am Tor hängen geblieben, das Dach hat jetzt eine Delle. Die Rechnung lautet auf
+    1.460 €, Moment, falsch abgelesen, es sind 1.640 €. Das Auto ist W-48329U und die Polizze VK-570834-C. Danke,
+    baba.
+  correct: {policy_number: VK-570834-C, incident_date: 2026-09-15, amount_claimed: 1640.00, licence_plate: W-48329U}
+  trap: amount corrected mid-sentence in a voice-message transcript (1.460 € → 1.640 €)
+
+# --- kind 5: a missing field — say "not there" (null) ----------------------------------------------
+
+- id: k5-01
+  kind: missing_field
+  claim_text: |
+    Sehr geehrte Damen und Herren,
+
+    am 10.02.2026 bin ich beim Ausparken in der Taborstraße an einem Verkehrsschild hängen geblieben. Der hintere
+    Kotflügel ist verbeult. Mein Kennzeichen ist W-73561X. Die Werkstatt veranschlagt 1.230,00 €.
+
+    Mit freundlichen Grüßen
+    Klaus Weber
+  correct: {policy_number: null, incident_date: 2026-02-10, amount_claimed: 1230.00, licence_plate: W-73561X}
+  trap: no policy number anywhere
+
+- id: k5-02
+  kind: missing_field
+  claim_text: |
+    Betreff: Kratzer
+
+    Guten Tag,
+
+    irgendwann während meines Urlaubs hat jemand mein geparktes Auto rundherum zerkratzt, ich habe es erst nach
+    meiner Rückkehr gesehen. Kennzeichen W-29048S, Polizze VK-148093-A. Die Lackierung kostet laut Werkstatt 1.575 €.
+
+    Liebe Grüße
+    Eva Lindner
+  correct: {policy_number: VK-148093-A, incident_date: null, amount_claimed: 1575.00, licence_plate: W-29048S}
+  trap: no incident date (only "during my holiday")
+
+- id: k5-03
+  kind: missing_field
+  claim_text: |
+    Am 06.06.2026 ist mir beim Vorbeifahren an einem Lieferwagen in der Neubaugasse der rechte Außenspiegel
+    abgebrochen. Kfz W-80652D, Polizze VK-613470-B. Kostenvoranschlag folgt, die Werkstatt hat noch keinen Termin
+    frei. Manfred Riegler
+  correct: {policy_number: VK-613470-B, incident_date: 2026-06-06, amount_claimed: null, licence_plate: W-80652D}
+  trap: no amount ("Kostenvoranschlag folgt")
+
+- id: k5-04
+  kind: missing_field
+  claim_text: |
+    Betreff: Wasserschaden Auto
+
+    Sehr geehrte Damen und Herren,
+
+    am 19.07.2026 bin ich nach einem Starkregen in eine überflutete Unterführung in Liesing gefahren. Wasser ist in
+    den Motorraum gelaufen, der Motor ist ausgegangen. Laut Werkstatt kostet die Reparatur 3.010,50 €.
+
+    Polizzennummer: VK-904316-D
+
+    Mit freundlichen Grüßen
+    Petra Zach
+  correct: {policy_number: VK-904316-D, incident_date: 2026-07-19, amount_claimed: 3010.50, licence_plate: null}
+  trap: no licence plate anywhere
+
+- id: k5-05
+  kind: missing_field
+  claim_text: |
+    Sehr geehrte Damen und Herren,
+
+    am 25.08.2026 habe ich beim Einparken in St. Pölten einen Blumentrog gerammt. Die vordere Stoßstange ist
+    gebrochen. Mein Kennzeichen ist PL-4410R, die Reparatur kostet 860,00 €. Die Polizzennummer reiche ich nach, ich
+    finde die Unterlagen gerade nicht.
+
+    Mit freundlichen Grüßen
+    Christian Bauer
+  correct: {policy_number: null, incident_date: 2026-08-25, amount_claimed: 860.00, licence_plate: PL-4410R}
+  trap: no policy number, but the text says one exists ("reiche ich nach")
+
+# --- kind 6: unusual date form — read it, or say "not there" --------------------------------------
+
+- id: k6-01
+  kind: unusual_date
+  claim_text: |
+    Sehr geehrte Damen und Herren,
+
+    am 3. März 2026 bin ich auf Schneematsch in der Grinzinger Straße ins Rutschen gekommen und gegen einen Hydranten
+    gefahren. Beschädigt sind Stoßstange und Kühler.
+
+    Kennzeichen W-16287F, Polizzennummer VK-285730-A. Die Reparatur kostet laut Werkstatt 2.890,00 €.
+
+    Mit freundlichen Grüßen
+    Renate Frank
+  correct: {policy_number: VK-285730-A, incident_date: 2026-03-03, amount_claimed: 2890.00, licence_plate: W-16287F}
+  trap: date written out ("3. März 2026")
+
+- id: k6-02
+  kind: unusual_date
+  claim_text: |
+    Wien, 22.04.2026
+
+    Sehr geehrte Damen und Herren,
+
+    am 17.4. habe ich beim Rückwärtsausparken vor der Schule in der Schopenhauerstraße ein Verkehrszeichen erwischt.
+    Der hintere Stoßfänger ist gebrochen.
+
+    Kennzeichen W-60718B, Polizze VK-517042-C. Kosten laut Werkstatt 1.045,00 €.
+
+    Mit freundlichen Grüßen
+    Bernhard Hofer
+  correct: {policy_number: VK-517042-C, incident_date: 2026-04-17, amount_claimed: 1045.00, licence_plate: W-60718B}
+  trap: date without a year ("17.4."); the year comes from the letter date
+
+- id: k6-03
+  kind: unusual_date
+  claim_text: |
+    Von: Simone Wolf
+    Gesendet: 09.06.2026 08:14
+    Betreff: Außenspiegel
+
+    Guten Morgen,
+
+    gestern Abend hat mir jemand in der Kurzparkzone in der Burggasse den linken Außenspiegel abgefahren. Kennzeichen
+    W-43790Y, Polizze VK-360418-B. Der neue Spiegel kostet 455,00 €.
+
+    Danke, Simone Wolf
+  correct: {policy_number: VK-360418-B, incident_date: 2026-06-08, amount_claimed: 455.00, licence_plate: W-43790Y}
+  trap: relative date ("gestern"); anchor = the email's sent date (09.06.2026)
+
+- id: k6-04
+  kind: unusual_date
+  claim_text: |
+    Wien, am 13. Juli 2026
+
+    Sehr geehrte Damen und Herren,
+
+    letzten Freitag bin ich auf dem Heimweg auf der Erdberger Lände durch ein tiefes Schlagloch gefahren. Felge und
+    Reifen vorne rechts sind hinüber.
+
+    Mein Kennzeichen: W-92365T
+    Polizzennummer: VK-679214-D
+    Kosten laut Werkstatt: 720,00 €
+
+    Mit freundlichen Grüßen
+    Walter Seidl
+  correct: {policy_number: VK-679214-D, incident_date: 2026-07-10, amount_claimed: 720.00, licence_plate: W-92365T}
+  trap: relative date ("letzten Freitag"); anchor = the letter date, itself written out (Mon 13 July → Fri 10 July)
+
+- id: k6-05
+  kind: unusual_date
+  claim_text: |
+    Anfang März ist mir beim Parken in der Hernalser Hauptstraße jemand in die Seite gefahren, einen Zettel hat keiner
+    hinterlassen. Hab es erst jetzt geschafft zu melden. Auto W-57024Q, Polizze VK-802637-A. Reparatur 1.310,00 €.
+    Tanja Roth
+  correct: {policy_number: VK-802637-A, incident_date: null, amount_claimed: 1310.00, licence_plate: W-57024Q}
+  trap: no day given ("Anfang März") → null; a guess like 01.03. counts as wrong
+
+# --- kind 7: forwarded thread — take the newest message's values -----------------------------------
+
+- id: k7-01
+  kind: forwarded_thread
+  claim_text: |
+    Betreff: AW: Schadensmeldung
+
+    Hallo nochmal,
+
+    die Werkstatt hat den Schaden jetzt genauer angesehen, der Betrag ist höher: 2.950,00 €. Alles andere bleibt wie
+    unten.
+
+    Liebe Grüße
+    Ewald Winkler
+
+    Ewald Winkler schrieb:
+    > Sehr geehrte Damen und Herren,
+    > am 14.02.2026 bin ich auf der Brünner Straße ins Rutschen gekommen und gegen einen Randstein geprallt.
+    > Kennzeichen W-18503M, Polizze VK-743591-C. Die Werkstatt schätzt vorerst 2.100,00 €.
+    > Mit freundlichen Grüßen
+    > Ewald Winkler
+  correct: {policy_number: VK-743591-C, incident_date: 2026-02-14, amount_claimed: 2950.00, licence_plate: W-18503M}
+  trap: old amount (2.100,00 €) in one quoted message, ">" style
+
+- id: k7-02
+  kind: forwarded_thread
+  claim_text: |
+    Betreff: WG: Schadensmeldung
+
+    Guten Tag,
+
+    kleine Richtigstellung zu meiner Meldung unten: Der Unfall war am 09.05.2026.
+
+    Freundliche Grüße
+    Karin Schuster
+
+    -----Ursprüngliche Nachricht-----
+    Von: Karin Schuster
+    Betreff: Schadensmeldung
+
+    Sehr geehrte Damen und Herren,
+    am 08.05.2026 ist mir auf dem Parkplatz beim Stadion beim Ausparken ein Pfosten in die Beifahrertür geraten.
+    Kennzeichen W-24619K, Polizzennummer VK-165830-A. Die Reparatur kostet 1.580,00 €.
+    Mit freundlichen Grüßen
+    Karin Schuster
+  correct: {policy_number: VK-165830-A, incident_date: 2026-05-09, amount_claimed: 1580.00, licence_plate: W-24619K}
+  trap: old date (08.05.) in one quoted message, "Ursprüngliche Nachricht" style
+
+- id: k7-03
+  kind: forwarded_thread
+  claim_text: |
+    Betreff: AW: AW: Schadensmeldung
+
+    Guten Tag,
+
+    danke für Ihre Nachfrage. Ich habe im ersten Mail das Kennzeichen meines alten Autos angegeben. Das versicherte
+    Fahrzeug hat das Kennzeichen W-70284E.
+
+    Mit freundlichen Grüßen
+    Lisa Neubauer
+
+    Schadenservice schrieb:
+    > Sehr geehrte Frau Neubauer,
+    > das angegebene Kennzeichen W-39152A ist unter Ihrer Polizze nicht erfasst. Bitte prüfen Sie Ihre Angaben.
+    > Mit freundlichen Grüßen
+    > Ihr Schadenservice
+    >
+    > Lisa Neubauer schrieb:
+    >> Sehr geehrte Damen und Herren,
+    >> am 20.03.2026 habe ich beim Einparken in der Garage unseres Wohnhauses die Seitenwand gestreift.
+    >> Kennzeichen W-39152A, Polizze VK-431962-B, Reparatur 1.960,00 €.
+    >> Mit freundlichen Grüßen
+    >> Lisa Neubauer
+  correct: {policy_number: VK-431962-B, incident_date: 2026-03-20, amount_claimed: 1960.00, licence_plate: W-70284E}
+  trap: old plate (W-39152A) twice in two quoted messages, ">" style
+
+- id: k7-04
+  kind: forwarded_thread
+  claim_text: |
+    Betreff: WG: WG: Sturmschaden Prater
+
+    Entschuldigung, noch eine Korrektur: Die richtige Polizzennummer ist VK-583107-D. Die Nummer unten gehört zu
+    meinem gekündigten Vertrag.
+
+    Richard Aichinger
+
+    -----Ursprüngliche Nachricht-----
+    Von: Richard Aichinger
+    Betreff: WG: Sturmschaden Prater
+
+    Anbei noch die Fotos vom Schaden.
+
+    -----Ursprüngliche Nachricht-----
+    Von: Richard Aichinger
+    Betreff: Sturmschaden Prater
+
+    Sehr geehrte Damen und Herren,
+    am 02.06.2026 ist bei starkem Wind in der Hauptallee ein Ast auf die Motorhaube meines Autos gefallen.
+    Kennzeichen W-86031J, Polizzennummer VK-519034-D. Die Reparatur kostet 3.340,00 €.
+    Mit freundlichen Grüßen
+    Richard Aichinger
+  correct: {policy_number: VK-583107-D, incident_date: 2026-06-02, amount_claimed: 3340.00, licence_plate: W-86031J}
+  trap: old policy number in the oldest of two quoted messages, "Ursprüngliche Nachricht" style
+
+- id: k7-05
+  kind: forwarded_thread
+  claim_text: |
+    Betreff: AW: Heckscheibe
+
+    Hallo,
+
+    die Rechnung ist jetzt da: 1.185,40 €. Bitte diesen Betrag nehmen.
+
+    LG Sonja Kraus
+
+    Sonja Kraus schrieb:
+    > Hallo,
+    > am 24.08.2026 hat ein Stein vom Rasenmäher des Nachbarn meine Heckscheibe getroffen, sie ist gesprungen.
+    > Kennzeichen W-31476H, Polizze VK-297650-B. Laut Kostenvoranschlag 1.300,00 €.
+    > LG Sonja Kraus
+  correct: {policy_number: VK-297650-B, incident_date: 2026-08-24, amount_claimed: 1185.40, licence_plate: W-31476H}
+  trap: old quote (1.300,00 €) in one quoted message; the newest amount is lower
+
+# --- kind 8: informal, messy text — the values are still stated once ------------------------------
+
+- id: k8-01
+  kind: informal_messy
+  claim_text: |
+    hallo ich hab am 11.02.2026 beim ausparken den randstein erwischt reifen und felge sind hin auto ist W-65203N
+    polizze VK-138207-A werkstatt sagt 395 euro lg rene
+  correct: {policy_number: VK-138207-A, incident_date: 2026-02-11, amount_claimed: 395.00, licence_plate: W-65203N}
+  trap: no punctuation or capitals (mild)
+
+- id: k8-02
+  kind: informal_messy
+  claim_text: |
+    Servus, heast, mir is am 27.03.2026 in da Tiafgarage a Säuln dahergrennt, de Tür is jetzt komplett eindruckt.
+    Mei Auto: W-49815C. Polizzn: VK-620385-B. De Werkstatt sogt 1.740 €. Pfiat eich, Ferdl Hauer
+  correct: {policy_number: VK-620385-B, incident_date: 2026-03-27, amount_claimed: 1740.00, licence_plate: W-49815C}
+  trap: Viennese dialect
+
+- id: k8-03
+  kind: informal_messy
+  claim_text: |
+    Sehr geehrte Damen und Hern, ich möchte eine Schaden melden am 16.04.2026 bin ich mit meine Auto w 58302 a gegen
+    ein Pfosten gefahren beim einparkn in der Garrage, Kotflügl links ist verbogen. Polizennummer VK-305916-C. Kostn
+    1.120,00 € laut Werkstat. mfg Sevgi Yilmaz
+  correct: {policy_number: VK-305916-C, incident_date: 2026-04-16, amount_claimed: 1120.00, licence_plate: W-58302A}
+  trap: many typos; plate lowercase with spaces
+
+- id: k8-04
+  kind: informal_messy
+  claim_text: |
+    also das war so ich bin am 08.07.2026 in der früh aus der einfahrt raus und da hab ich den postkasten vom nachbarn
+    nicht gesehen und bin voll dagegen und jetzt ist meine stoßstange hinten kaputt und das rücklicht auch und die
+    werkstatt hat gesagt das kostet 1200 euro kennzeichen W-77420P und die polizze ist VK-462803-D danke
+  correct: {policy_number: VK-462803-D, incident_date: 2026-07-08, amount_claimed: 1200.00, licence_plate: W-77420P}
+  trap: one run-on sentence; unformatted amount ("1200 euro")
+
+- id: k8-05
+  kind: informal_messy
+  claim_text: |
+    hi! parkschaden 😡 am 21.08.2026 vorm billa in favoriten. jmd is mir rein und abghaut. kfz W 90436 R, pol. nr
+    vk 918264 b. KV werkstatt: 2.450,-€. brauch ich noch was?? lg dani
+  correct: {policy_number: VK-918264-B, incident_date: 2026-08-21, amount_claimed: 2450.00, licence_plate: W-90436R}
+  trap: SMS style with abbreviations; identifiers lowercase with spaces (heavy)

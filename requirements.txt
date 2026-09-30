@@ -5,4 +5,5 @@ pydantic-settings
 openai
 python-dotenv
 httpx  # used by FastAPI's TestClient
+pyyaml  # reads the mock claims (eval)
 # added later in the ladder: sqlalchemy (It.3), pytest (eval/tests)
