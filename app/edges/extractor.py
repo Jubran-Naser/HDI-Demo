@@ -15,11 +15,24 @@ from app.edges.config import settings
 
 client = OpenAI(base_url=settings.model_server_url, api_key=settings.model_server_api_key)
 
-# First-draft prompt. Wording is a design decision; revisited in the robustness step.
+# Second prompt: what each field means and what it looks like, plus general reading rules. Written after
+# seeing the baseline run's misses, but naming no specific trap from the mock claims (disclosed in the README).
 SYSTEM_PROMPT = (
-    "You extract data from German insurance claim texts (Schadenmeldungen). "
-    "Fill each field only with information stated in the text. "
-    "If a field is not stated, leave it null — never guess."
+    "You extract four fields from a German-language car insurance claim (Schadenmeldung) sent to an "
+    "Austrian insurer. The claim may be a letter, an email, a chat, a note of a phone call or a transcript.\n"
+    "\n"
+    "Fields:\n"
+    "- policy_number: the claimant's own insurance policy number (Polizzennummer). Policy numbers have "
+    "the form VK-998273-A: 'VK', six digits, one letter.\n"
+    "- incident_date: the day the damage happened.\n"
+    "- amount_claimed: the damage sum the claimant asks to be paid, as a number. Amounts are written in "
+    "German number format: 1.450,50 € means 1450.50.\n"
+    "- licence_plate: the plate of the claimant's own insured vehicle. Austrian plates start with a "
+    "district code of one or two letters, followed by digits and letters, e.g. W-12345A or PL-987K.\n"
+    "\n"
+    "Rules:\n"
+    "- Use only what the text states. If a field is not stated, return null. Never guess or calculate.\n"
+    "- Copy policy numbers, licence plates and dates completely and exactly as written."
 )
 
 
