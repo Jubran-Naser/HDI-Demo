@@ -24,5 +24,9 @@ class Settings(BaseSettings):
     # so swapping the model server means changing this setting too.
     model_server_extra_body: dict = {"reasoning_effort": "none"}
 
+    # Where the audit records are stored. Default: a SQLite file next to where the service starts
+    # (no database server needed). PostgreSQL later: set DATABASE_URL, no code change.
+    database_url: str = "sqlite:///audit.db"
+
 
 settings = Settings()

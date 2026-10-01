@@ -6,8 +6,10 @@ model server constrains the reply to JSON that fits it. The type check
 instead of failing — a doubtful answer is a case for a person, not an error.
 """
 
+import hashlib
 import json
 
+import httpx
 from openai import OpenAI
 
 from app.core.models import InsuranceClaim, validate_fields
@@ -85,3 +87,24 @@ def self_test_thinking_off() -> None:
             "Thinking-off self-test failed: the AI model returned thinking text. "
             "Set MODEL_SERVER_EXTRA_BODY to this model server's way of switching thinking off."
         )
+
+
+def provenance() -> dict:
+    """Which exact system decides: the AI model, its version, and the instructions it gets."""
+    instructions = SYSTEM_PROMPT + json.dumps(_response_format(), sort_keys=True)
+    return {
+        "ai_model": settings.ai_model,
+        "ai_model_fingerprint": ai_model_fingerprint(),
+        "instructions_fingerprint": hashlib.sha256(instructions.encode()).hexdigest()[:12],
+    }
+
+
+def ai_model_fingerprint() -> str:
+    """Ollama's fingerprint (digest) of the AI model's files: it changes when the model is updated.
+    'unknown' on model servers that don't report one."""
+    ollama_root = settings.model_server_url.removesuffix("/v1")
+    try:
+        models = httpx.get(f"{ollama_root}/api/tags", timeout=5).json()["models"]
+    except (httpx.HTTPError, KeyError, ValueError):
+        return "unknown"
+    return next((model["digest"][:12] for model in models if model["name"] == settings.ai_model), "unknown")

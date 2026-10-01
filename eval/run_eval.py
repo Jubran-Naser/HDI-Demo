@@ -8,10 +8,13 @@ Run from the repo root:  python -m eval.run_eval <label>     (e.g. baseline)
 """
 
 import json
+import os
 import sys
 from collections import Counter
 from datetime import date
 from pathlib import Path
+
+os.environ["DATABASE_URL"] = "sqlite:///eval/results/eval-audit.db"   # mock claims never reach the service's own logbook
 
 import yaml
 from fastapi.testclient import TestClient
