@@ -1,0 +1,10 @@
+# What changed in each eval run, and which commit holds the code it ran on. Read by eval/report.py.
+- label: baseline
+  what_changed: the service as first built (dates requested in year-first format; short first-draft prompt)
+  code: c1c6376
+- label: date-as-written
+  what_changed: the AI model copies the date as written; our code reads it (no year-first format rule)
+  code: e7d9b76
+- label: better-prompt
+  what_changed: the prompt defines the four fields and their formats (policy number, plate, German amounts)
+  code: 20b964b
