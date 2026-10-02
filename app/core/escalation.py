@@ -128,3 +128,13 @@ def escalate_if_doubtful(
         proxy_check_results=results,
         outcome="auto_approve" if all_passed else "escalate",
     )
+
+
+def escalate_without_an_answer(reason: str) -> ClaimDecision:
+    """No usable answer from the AI model: nothing to check, so a person takes the claim.
+    The reason is kept like a proxy check result, so the audit record explains it the same way."""
+    return ClaimDecision(
+        extracted_claim=InsuranceClaim(),   # every field empty
+        proxy_check_results=[ProxyCheckResult(field="all fields", kind="ai_model_answer", passed=False, detail=reason)],
+        outcome="escalate",
+    )

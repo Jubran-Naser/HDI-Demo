@@ -24,6 +24,9 @@ class Settings(BaseSettings):
     # so swapping the model server means changing this setting too.
     model_server_extra_body: dict = {"reasoning_effort": "none"}
 
+    # How long to wait for the AI model's answer before giving up; the claim then goes to a person.
+    model_server_timeout_seconds: float = 60
+
     # Where the audit records are stored. Default: a SQLite file next to where the service starts
     # (no database server needed). PostgreSQL later: set DATABASE_URL, no code change.
     database_url: str = "sqlite:///audit.db"

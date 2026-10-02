@@ -10,12 +10,26 @@ import hashlib
 import json
 
 import httpx
+import openai
 from openai import OpenAI
 
 from app.core.models import InsuranceClaim, validate_fields
 from app.edges.config import settings
 
-client = OpenAI(base_url=settings.model_server_url, api_key=settings.model_server_api_key)
+client = OpenAI(
+    base_url=settings.model_server_url,
+    api_key=settings.model_server_api_key,
+    timeout=settings.model_server_timeout_seconds,
+    max_retries=0,   # no silent retries: a failed attempt sends the claim to a person instead of waiting longer
+)
+
+
+class NoUsableAnswer(Exception):
+    """The AI model gave no usable answer; `reason` says why, in plain words."""
+
+    def __init__(self, reason: str):
+        super().__init__(reason)
+        self.reason = reason
 
 # Second prompt: what each field means and what it looks like, plus general reading rules. Written after
 # seeing the baseline run's misses, but naming no specific trap from the mock claims (disclosed in the README).
@@ -55,17 +69,38 @@ def _response_format() -> dict:
 
 
 def extract_claim(claim_text: str) -> tuple[InsuranceClaim, dict[str, object]]:
-    response = client.chat.completions.create(
-        model=settings.ai_model,
-        messages=[
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": claim_text},
-        ],
-        response_format=_response_format(),
-        temperature=0,  # same input → same output; needed for repeatable results
-        extra_body=settings.model_server_extra_body,  # thinking off
-    )
-    return validate_fields(json.loads(response.choices[0].message.content))
+    try:
+        response = client.chat.completions.create(
+            model=settings.ai_model,
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": claim_text},
+            ],
+            response_format=_response_format(),
+            temperature=0,  # same input → same output; needed for repeatable results
+            extra_body=settings.model_server_extra_body,  # thinking off
+        )
+    except openai.APITimeoutError as error:     # listed first: it's a kind of connection error
+        raise NoUsableAnswer(
+            f"the AI model did not answer within {settings.model_server_timeout_seconds:g} seconds") from error
+    except openai.APIConnectionError as error:
+        raise NoUsableAnswer("the model server could not be reached") from error
+    except openai.APIStatusError as error:
+        raise NoUsableAnswer(f"the model server returned an error (HTTP {error.status_code})") from error
+    return validate_fields(fields_from_reply(response.choices[0].message))
+
+
+def fields_from_reply(message) -> dict:
+    """The AI model's reply as a set of fields, or NoUsableAnswer if there's nothing usable in it."""
+    if getattr(message, "refusal", None):
+        raise NoUsableAnswer("the AI model refused to answer")
+    try:
+        reply = json.loads(message.content or "")
+    except json.JSONDecodeError as error:
+        raise NoUsableAnswer("the AI model's reply was not valid JSON") from error
+    if not isinstance(reply, dict):
+        raise NoUsableAnswer("the AI model's reply was not a set of fields")
+    return reply
 
 
 def self_test_thinking_off() -> None:

@@ -31,7 +31,7 @@ class ProxyCheckResult(BaseModel):
     """The result of one proxy check: one question about one field → passed or flagged."""
 
     field: str
-    kind: Literal["type_check", "completeness", "verification"]
+    kind: Literal["type_check", "completeness", "verification", "ai_model_answer"]
     passed: bool
     detail: str
 

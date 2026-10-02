@@ -38,6 +38,8 @@ flowchart LR
 3. **The rule:** any flag sends the claim to a person. The checks are plain code — the same answer and text always
    give the same decision.
 4. The decision is saved as an **audit record** before the response leaves.
+5. **If the AI model gives no usable answer** — the model server can't be reached, takes longer than 60 seconds,
+   returns an error, or replies with something unusable — the claim goes to a person, and the audit record says why.
 
 ## Where AI, where not
 
@@ -90,6 +92,8 @@ Reproduce: `python -m eval.run_eval <run-name>`, then
 - **Bugs found while measuring can't come back** — the date format rule that garbled 15 dates, and a grading mistake
   for claims with a missing field.
 - **Every decision is recorded** — the endpoint with a stand-in AI model: decision, audit record, `/stats`.
+- **A failing AI model never loses a claim** — an unreachable model server or an unusable reply still ends in a
+  recorded decision (to a person), with the reason.
 
 **Known limits are tests too.** 8 of the 24 cases are marked as expected failures — what checking values against
 the claim text can't do, e.g. a wrong date that also appears in the text.
