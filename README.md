@@ -79,6 +79,24 @@ on real claims — that would need real (anonymized) claims at a much larger sca
 Reproduce: `python -m eval.run_eval <run-name>`, then
 `python -m eval.report <date> <run-names…>` (needs the AI model running).
 
+## What the tests protect
+
+`pytest` runs in under a second and needs no AI model (a stand-in replaces it):
+
+- **No wrong value goes through because of a broken rule** — the rule is tested on 24 hand-written AI model answers,
+  each changing one thing in a correct answer.
+- **Austrian dates, amounts and identifiers are read correctly** — day-first dates, "1.450,50 €", plates with or
+  without spaces.
+- **Bugs found while measuring can't come back** — the date format rule that garbled 15 dates, and a grading mistake
+  for claims with a missing field.
+- **Every decision is recorded** — the endpoint with a stand-in AI model: decision, audit record, `/stats`.
+
+**Known limits are tests too.** 8 of the 24 cases are marked as expected failures — what checking values against
+the claim text can't do, e.g. a wrong date that also appears in the text.
+
+**The tests are tested.** `python scripts/break_check.py` breaks the code on purpose in three places — the rule,
+reading dates, matching identifiers — and shows which tests notice. Each break is caught (13, 4 and 3 failing tests).
+
 ## The stated assumption
 
 This demo rests on one stated assumption: claims arrive as free text. If HDI's intake is already structured, the
@@ -162,4 +180,5 @@ WHERE r.id = 2 AND (check_result->>'passed')::boolean = false;
 | `app/core/` | pure logic: the data shapes, the proxy checks and the rule, text matching — no network, no AI model |
 | `app/edges/` | everything that talks to the outside: the API, the AI model, the database, settings |
 | `eval/` | mock claims, the drafting spec, the runner, the report, and every saved run |
+| `tests/`, `scripts/break_check.py` | the tests, and the check that they catch deliberate breaks |
 | `Dockerfile`, `docker-compose.yml` | the service image and the two-container setup |
