@@ -1,0 +1,22 @@
+# Runs the tests and the break check on every push, on GitHub's machines (no AI model needed).
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4            # get the repo's code
+      - uses: actions/setup-python@v5        # install Python 3.13
+        with:
+          python-version: "3.13"
+          cache: pip                         # reuse downloaded libraries between runs
+      - name: Install the libraries
+        run: pip install -r requirements.txt
+      - name: Run the tests
+        run: pytest
+      - name: Check that the tests catch deliberate breaks
+        run: python scripts/break_check.py

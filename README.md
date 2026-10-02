@@ -1,5 +1,7 @@
 # HDI-Demo
 
+![tests](https://github.com/Jubran-Naser/HDI-Demo/actions/workflows/tests.yml/badge.svg)
+
 A small service that reads a free-text car insurance claim, pulls out four facts — **policy number, incident date,
 amount claimed, licence plate** — and checks each one against the text. If every check passes, the claim goes through
 automatically; if anything is doubtful, it goes to a person. The AI model runs locally, so claim data never leaves the
