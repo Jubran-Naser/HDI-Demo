@@ -1,4 +1,4 @@
-# local-claim-intake
+# HDI-Demo
 
 A small service that reads a free-text car insurance claim, pulls out four facts — **policy number, incident date,
 amount claimed, licence plate** — and checks each one against the text. If every check passes, the claim goes through

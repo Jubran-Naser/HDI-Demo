@@ -277,7 +277,7 @@ def main() -> None:
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Offline measuring · results {run_date}</title><style>{CSS}</style></head><body><main>
 <h1>Offline measuring · results</h1>
-<p class="sub">local-claim-intake · {run_date} · {len(labels)} runs</p>
+<p class="sub">HDI-Demo · {run_date} · {len(labels)} runs</p>
 {headline(runs)}
 {contents()}
 <h2 id="grades">1 · {SECTIONS["grades"]}</h2>
