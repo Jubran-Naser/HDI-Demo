@@ -1,0 +1,31 @@
+# One command: docker compose up. Starts the database, then the service.
+# The AI model runs on the computer itself (Ollama), outside Docker: see README.
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: claims
+      POSTGRES_PASSWORD: claims        # demo only; a real deployment takes this from a secret store
+      POSTGRES_DB: claims
+    volumes:
+      - audit-data:/var/lib/postgresql/data   # the audit records survive restarts
+    healthcheck:                               # "ready" = PostgreSQL accepts connections
+      test: ["CMD-SHELL", "pg_isready -U claims -d claims"]
+      interval: 2s
+      retries: 15
+
+  service:
+    build: .
+    environment:
+      DATABASE_URL: postgresql+psycopg://claims:claims@db:5432/claims
+      MODEL_SERVER_URL: http://host.docker.internal:11434/v1    # Ollama on the computer itself
+    extra_hosts:
+      - "host.docker.internal:host-gateway"   # makes that address work on Linux too
+    ports:
+      - "${SERVICE_PORT:-8000}:8000"          # the computer's port: 8000 unless SERVICE_PORT says otherwise
+    depends_on:
+      db:
+        condition: service_healthy            # wait until the database is ready
+
+volumes:
+  audit-data:

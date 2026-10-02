@@ -7,4 +7,5 @@ python-dotenv
 httpx  # used by FastAPI's TestClient
 pyyaml  # reads the mock claims (eval)
 sqlalchemy  # the audit records (database)
+psycopg[binary]  # PostgreSQL driver (Docker setup)
 # added later in the ladder: pytest (tests)
