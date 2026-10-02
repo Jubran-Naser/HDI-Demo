@@ -13,7 +13,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 from app.core.models import ClaimDecision
 from app.edges.config import settings
 
-engine = create_engine(settings.database_url)
+database = create_engine(settings.database_url)   # SQLAlchemy calls this an "engine": the connection to the database
 
 
 class Base(DeclarativeBase):
@@ -35,7 +35,7 @@ class AuditRecord(Base):
 
 
 def create_tables() -> None:
-    Base.metadata.create_all(engine)
+    Base.metadata.create_all(database)
 
 
 def save_audit_record(claim_text: str, decision: ClaimDecision, provenance: dict, received_at: datetime) -> int:
@@ -47,7 +47,7 @@ def save_audit_record(claim_text: str, decision: ClaimDecision, provenance: dict
         outcome=decision.outcome,
         **provenance,
     )
-    with Session(engine) as session, session.begin():   # one transaction: saved completely, or not at all
+    with Session(database) as session, session.begin():   # one transaction: saved completely, or not at all
         session.add(record)
         session.flush()                                  # the database assigns the record's id
         return record.id
@@ -55,7 +55,7 @@ def save_audit_record(claim_text: str, decision: ClaimDecision, provenance: dict
 
 def straight_through_rate() -> dict:
     """The share of decisions made with no person involved, over all audit records."""
-    with Session(engine) as session:
+    with Session(database) as session:
         decisions = session.scalar(select(func.count()).select_from(AuditRecord))
         automatic = session.scalar(
             select(func.count()).select_from(AuditRecord).where(AuditRecord.outcome == "auto_approve"))

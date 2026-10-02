@@ -1,4 +1,4 @@
-"""Settings for the model server and the AI model it runs.
+"""Settings for the model server, the AI model it runs, and the database for the audit records.
 
 Names used here: this file = config.py · `Settings` = the list of settings with their
 defaults · `settings` = the values in use (defaults, overridden by environment variables
