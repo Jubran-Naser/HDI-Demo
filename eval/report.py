@@ -62,8 +62,11 @@ def load_run(run_date: str, label: str) -> tuple[dict, list[dict]]:
     return header, graded
 
 
+RUN_NAMES = {run["label"]: run["name"] for run in yaml.safe_load((EVAL_DIR / "runs.yaml").read_text())}
+
+
 def run_name(position: int, label: str) -> str:
-    return f"{position} · {label.replace('-', ' ')}"
+    return f"{position} · {RUN_NAMES.get(label, label.replace('-', ' '))}"
 
 
 def shown(field: str, value: object) -> str:
@@ -298,6 +301,12 @@ def main() -> None:
     report_file = RESULTS_DIR / f"{run_date}_report.html"
     report_file.write_text(page)
     print(f"saved: {report_file}")
+
+    # The first chart also as its own image file, for the README (a README can only show image files).
+    # A white background keeps the dark text readable in GitHub's dark mode.
+    chart_file = RESULTS_DIR / f"{run_date}_grades.svg"
+    chart_file.write_text(grades_chart(runs).replace(">", '><rect width="100%" height="100%" fill="#ffffff"/>', 1))
+    print(f"saved: {chart_file}")
     try:
         from weasyprint import HTML
     except ImportError:
