@@ -7,6 +7,20 @@ amount claimed, licence plate** — and checks each one against the text. If eve
 automatically; if anything is doubtful, it goes to a person. The AI model runs locally, so claim data never leaves the
 machine, and every decision is saved as an audit record.
 
+**Contents**
+
+- [Results at a glance](#results-at-a-glance)
+- [How it works](#how-it-works)
+- [Where AI, where not](#where-ai-where-not)
+- [How it's measured](#how-its-measured)
+- [What the tests protect](#what-the-tests-protect)
+- [The stated assumption](#the-stated-assumption)
+- [Run it](#run-it)
+- [Audit records](#audit-records)
+- [Design choices and limits](#design-choices-and-limits)
+- [How this was made](#how-this-was-made)
+- [Where to look](#where-to-look)
+
 ## Results at a glance
 
 Measured on 50 mock claims — 10 clean, 40 built around a known trap (two dates, a correction, a forwarded thread, …):
